@@ -1,0 +1,14 @@
+main: hr.helmiaRebuilt.helmiaRebuiltFinal
+name: HelmiaRebuilt
+version: 0.0.1
+author: Minkster09
+api-version: 1.21
+description: Helmia Rebuilt Plugin
+commands:
+  helmiarebuilt:
+    aliases: [hr, helmia, rebuilt]
+    description: "Multi-Purpose Helmia Rebuilt Command"
+    usage: "/helmiarebuilt <function> <function-details>"
+    permission: op
+    permission-message: &cYou do not have permission to run this command!
+
