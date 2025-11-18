@@ -11,4 +11,21 @@ commands:
     usage: "/helmiarebuilt <function> <function-details>"
     permission: op
     permission-message: &cYou do not have permission to run this command!
+  gmc:
+    aliases: [gamemodecreative, tgmc]
+    permission: op
+    permission-message: &cYou do not have permission to run this command!
+  gmsp:
+    aliases: [gamemodespectator, tgmsp]
+    permission: op
+    permission-message: &cYou do not have permission to run this command!
+  gms:
+    aliases: [gamemodesurvival, tgms]
+    permission: op
+    permission-message: &cYou do not have permission to run this command!
+  gma:
+    aliases: [gamemodeadventure, tgma]
+    permission: op
+    permission-message: &cYou do not have permission to run this command!
+
 

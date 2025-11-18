@@ -1,5 +1,9 @@
 package hr.helmiaRebuilt;
 
+import hr.helmiaRebuilt.commandAlliases.gma;
+import hr.helmiaRebuilt.commandAlliases.gmc;
+import hr.helmiaRebuilt.commandAlliases.gms;
+import hr.helmiaRebuilt.commandAlliases.gmsp;
 import hr.helmiaRebuilt.customChat.chatColors;
 import hr.helmiaRebuilt.customSmithing.recipeRegister;
 import hr.helmiaRebuilt.customSmithing.listeners.smithingTableClose;
@@ -38,6 +42,10 @@ public final class helmiaRebuiltFinal extends JavaPlugin {
         // Register commands
         getCommand("helmiarebuilt").setExecutor(new helmiarebuiltCommand());
         getCommand("helmiarebuilt").setTabCompleter(new helmiarebuiltCommandCompleter());
+        getCommand("gmc").setExecutor(new gmc());
+        getCommand("gmsp").setExecutor(new gmsp());
+        getCommand("gms").setExecutor(new gms());
+        getCommand("gma").setExecutor(new gma());
 
         // Register events
         getServer().getPluginManager().registerEvents(new smithingUIListener(this), this);

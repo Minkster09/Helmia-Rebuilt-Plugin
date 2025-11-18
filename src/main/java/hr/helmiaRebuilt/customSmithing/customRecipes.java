@@ -2,9 +2,10 @@ package hr.helmiaRebuilt.customSmithing;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class customRecipes {
     private final Map<Integer, ItemStack> ingredients;
@@ -16,75 +17,115 @@ public class customRecipes {
     }
 
     public ItemStack getResult() {
-        return result;
+        return result == null ? null : result.clone();
     }
 
     public Map<Integer, ItemStack> getIngredients() {
         return ingredients;
     }
 
+    /**
+     * Returns true if this recipe matches the given inventory.
+     * (Uses getIngredientToInventorySlotMapping under the hood.)
+     */
     public boolean matches(Inventory inv) {
-        // Check if the inventory has the correct ingredients
-        for (Map.Entry<Integer, ItemStack> entry : ingredients.entrySet()) {
-            int slot = entry.getKey();
-            ItemStack requiredItem = entry.getValue();
-            ItemStack currentItem = inv.getItem(slot);
-
-            // Handle null requiredItem (empty slot in recipe)
-            if (requiredItem == null) {
-                if (currentItem != null && currentItem.getType() != null && !currentItem.getType().isAir()) {
-                    return false; // Expected empty slot, but found an item
-                }
-                continue; // Continue checking other slots
-            }
-
-            // Check if currentItem is null or doesn't match the requiredItem
-            if (currentItem == null || !isItemEqual(currentItem, requiredItem)) {
-                return false; // Required item not found or does not match
-            }
-
-            // Check for stack size
-            if (currentItem.getAmount() < requiredItem.getAmount()) {
-                return false; // Not enough items in the current slot
-            }
-        }
-        return true; // All required items matched
+        return getIngredientToInventorySlotMapping(inv) != null;
     }
 
-    private boolean isItemEqual(ItemStack item, ItemStack requiredItem) {
-        // If either item or requiredItem is null, return false (they can't be equal)
-        if (item == null || requiredItem == null) {
-            return false;
+    /**
+     * If the recipe matches this inventory, returns a mapping from recipe-slot -> actual inventory-slot.
+     * Example: {10->10, 11->11, 12->12} for normal orientation
+     *          {10->11, 11->10, 12->12} for swapped orientation
+     * Returns null if the recipe doesn't match.
+     */
+    public Map<Integer, Integer> getIngredientToInventorySlotMapping(Inventory inv) {
+        // required items per recipe slots (may be null meaning "expected empty")
+        ItemStack required10 = ingredients.get(10);
+        ItemStack required11 = ingredients.get(11);
+        ItemStack required12 = ingredients.get(12);
+
+        // actual inventory stacks
+        ItemStack stack10 = inv.getItem(10);
+        ItemStack stack11 = inv.getItem(11);
+        ItemStack stack12 = inv.getItem(12);
+
+        // Check slot 12 (fixed) first
+        if (!slotMatchesRequirement(stack12, required12) || !amountSufficient(stack12, required12)) {
+            return null; // slot 12 must match exactly (and have enough amount if required)
         }
 
-        // Check if the material type is the same
-        if (!item.getType().equals(requiredItem.getType())) {
-            return false; // Different material
+        // Check normal orientation: 10->10 and 11->11
+        boolean normal10 = slotMatchesRequirement(stack10, required10) && amountSufficient(stack10, required10);
+        boolean normal11 = slotMatchesRequirement(stack11, required11) && amountSufficient(stack11, required11);
+
+        if (normal10 && normal11) {
+            Map<Integer, Integer> mapping = new HashMap<>();
+            mapping.put(10, 10);
+            mapping.put(11, 11);
+            mapping.put(12, 12);
+            return mapping;
         }
 
-        // Compare the metadata (display name, lore, etc.)
-        ItemMeta itemMeta = item.getItemMeta();
-        ItemMeta requiredMeta = requiredItem.getItemMeta();
+        // Check swapped orientation: 10->11 and 11->10
+        boolean swapped10 = slotMatchesRequirement(stack10, required11) && amountSufficient(stack10, required11);
+        boolean swapped11 = slotMatchesRequirement(stack11, required10) && amountSufficient(stack11, required10);
 
-        if (requiredMeta != null && itemMeta != null) {
-            // Check display name
-            if (requiredMeta.hasDisplayName() && !requiredMeta.getDisplayName().equals(itemMeta.getDisplayName())) {
-                return false; // Display name doesn't match
-            }
-
-            // Check lore
-            if (requiredMeta.hasLore() && !requiredMeta.getLore().equals(itemMeta.getLore())) {
-                return false; // Lore doesn't match
-            }
-
-            // Check custom model data if present
-            if (requiredMeta.hasCustomModelData() && requiredMeta.getCustomModelData() != itemMeta.getCustomModelData()) {
-                return false; // Custom model data doesn't match
-            }
-        } else if (requiredMeta != null || itemMeta != null) {
-            return false; // One has meta while the other doesn't
+        if (swapped10 && swapped11) {
+            Map<Integer, Integer> mapping = new HashMap<>();
+            mapping.put(10, 11); // recipe slot 10 comes from inventory slot 11
+            mapping.put(11, 10); // recipe slot 11 comes from inventory slot 10
+            mapping.put(12, 12);
+            return mapping;
         }
 
-        return true; // All checks passed
+        return null; // no valid orientation found
+    }
+
+    /**
+     * Consume required ingredient amounts from the inventory according to matching orientation.
+     * If there is no match right now, does nothing.
+     */
+    public void consume(Inventory inv) {
+        Map<Integer, Integer> mapping = getIngredientToInventorySlotMapping(inv);
+        if (mapping == null) return; // nothing to consume
+
+        for (Map.Entry<Integer, ItemStack> entry : ingredients.entrySet()) {
+            int recipeSlot = entry.getKey();
+            ItemStack required = entry.getValue();
+            if (required == null) continue; // nothing required for this slot
+
+            Integer invSlot = mapping.get(recipeSlot);
+            if (invSlot == null) continue; // defensive
+
+            ItemStack current = inv.getItem(invSlot);
+            if (current == null) continue; // nothing to remove (shouldn't happen if matched)
+
+            int newAmount = current.getAmount() - required.getAmount();
+            if (newAmount <= 0) {
+                inv.setItem(invSlot, null);
+            } else {
+                ItemStack clone = current.clone();
+                clone.setAmount(newAmount);
+                inv.setItem(invSlot, clone);
+            }
+        }
+    }
+
+    /* ---------- helper utilities ---------- */
+
+    // If required == null => expects empty slot (allowed). Otherwise check isSimilar.
+    private boolean slotMatchesRequirement(ItemStack provided, ItemStack required) {
+        if (required == null) {
+            return provided == null || provided.getType().isAir();
+        }
+        if (provided == null) return false;
+        return provided.isSimilar(required);
+    }
+
+    // Amount check: if required == null => OK. Else provided must have >= required amount.
+    private boolean amountSufficient(ItemStack provided, ItemStack required) {
+        if (required == null) return true;
+        if (provided == null) return false;
+        return provided.getAmount() >= required.getAmount();
     }
 }

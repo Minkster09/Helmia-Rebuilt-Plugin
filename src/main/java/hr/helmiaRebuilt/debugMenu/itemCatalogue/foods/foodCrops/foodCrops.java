@@ -74,6 +74,34 @@ public class foodCrops {
         foodCropsInv.setItem(14, customItemManager.getCustomItem("beetroot"));
         foodCropsInv.setItem(15, customItemManager.getCustomItem("brown_mushroom"));
         foodCropsInv.setItem(16, customItemManager.getCustomItem("red_mushroom"));
+        //17 empty
+        foodCropsInv.setItem(18, customItemManager.getCustomItem("pomegranate"));
+        foodCropsInv.setItem(19, customItemManager.getCustomItem("hazelnut"));
+        foodCropsInv.setItem(20, customItemManager.getCustomItem("radish"));
+        //21 empty
+        foodCropsInv.setItem(22, customItemManager.getCustomItem("blackberries"));
+        foodCropsInv.setItem(23, customItemManager.getCustomItem("nettle"));
+        foodCropsInv.setItem(24, customItemManager.getCustomItem("northern_sage"));
+        foodCropsInv.setItem(25, customItemManager.getCustomItem("kaelons_tongue"));
+        foodCropsInv.setItem(26, customItemManager.getCustomItem("everdew"));
+        foodCropsInv.setItem(27, customItemManager.getCustomItem("poppy"));
+        foodCropsInv.setItem(28, customItemManager.getCustomItem("rose_bush"));
+        foodCropsInv.setItem(29, customItemManager.getCustomItem("dandelion"));
+        foodCropsInv.setItem(30, customItemManager.getCustomItem("sunflower"));
+        foodCropsInv.setItem(31, customItemManager.getCustomItem("cornflower"));
+        foodCropsInv.setItem(32, customItemManager.getCustomItem("oxeye_daisy"));
+        foodCropsInv.setItem(33, customItemManager.getCustomItem("azure_bluet"));
+        foodCropsInv.setItem(34, customItemManager.getCustomItem("red_tulip"));
+        foodCropsInv.setItem(35, customItemManager.getCustomItem("lilac"));
+        foodCropsInv.setItem(36, customItemManager.getCustomItem("peony"));
+        foodCropsInv.setItem(37, customItemManager.getCustomItem("orange_tulip"));
+        foodCropsInv.setItem(38, customItemManager.getCustomItem("allium"));
+        foodCropsInv.setItem(39, customItemManager.getCustomItem("pink_tulip"));
+        foodCropsInv.setItem(40, customItemManager.getCustomItem("white_tulip"));
+        foodCropsInv.setItem(41, customItemManager.getCustomItem("lily_of_the_valley"));
+        foodCropsInv.setItem(42, customItemManager.getCustomItem("blue_orchid"));
+        foodCropsInv.setItem(43, customItemManager.getCustomItem("wither_rose"));
+        foodCropsInv.setItem(44, customItemManager.getCustomItem("torchflower"));
 
         // Store the Item Catalogue UI for the player in the map
         foodCropsMap.put(player, foodCropsInv);

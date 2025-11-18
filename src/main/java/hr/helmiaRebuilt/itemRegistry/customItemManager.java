@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static hr.helmiaRebuilt.helmiaRebuiltFinal.plugin;
+
 public class customItemManager {
     private static final Map<String, ItemStack> customItems = new HashMap<>();
 
@@ -336,6 +338,14 @@ public class customItemManager {
         ItemMeta rayyenaraMeta = rayyenara.getItemMeta();
         rayyenaraMeta.setCustomModelData(1);
         rayyenaraMeta.setDisplayName(ChatColor.WHITE + "Rayyenara");
+        List<String> rayyenaraLore = new ArrayList<>();
+        rayyenaraLore.add(ChatColor.GRAY + "Food");
+        rayyenaraLore.add(null);
+        rayyenaraMeta.setLore(rayyenaraLore);
+        NamespacedKey codenameKey = new NamespacedKey(plugin, "hrData_codename");
+        NamespacedKey typeKey = new NamespacedKey(plugin, "hrData_type");
+        rayyenaraMeta.getPersistentDataContainer().set(codenameKey, PersistentDataType.STRING, "rayyenara");
+        rayyenaraMeta.getPersistentDataContainer().set(typeKey, PersistentDataType.STRING, "food");
         rayyenara.setItemMeta(rayyenaraMeta);
         customItems.put("rayyenara", rayyenara);
 
@@ -594,6 +604,83 @@ public class customItemManager {
         azure_bluetMeta.setDisplayName(ChatColor.WHITE + "Azure Bluet");
         azure_bluet.setItemMeta(azure_bluetMeta);
         customItems.put("azure_bluet", azure_bluet);
+
+        ItemStack red_tulip = new ItemStack(Material.RED_TULIP);
+        ItemMeta red_tulipMeta = red_tulip.getItemMeta();
+        red_tulipMeta.setCustomModelData(0);
+        red_tulipMeta.setDisplayName(ChatColor.WHITE + "Red Tulip");
+        red_tulip.setItemMeta(red_tulipMeta);
+        customItems.put("red_tulip", red_tulip);
+
+        ItemStack lilac = new ItemStack(Material.LILAC);
+        ItemMeta lilacMeta = lilac.getItemMeta();
+        lilacMeta.setCustomModelData(0);
+        lilacMeta.setDisplayName(ChatColor.WHITE + "Lilac");
+        lilac.setItemMeta(lilacMeta);
+        customItems.put("lilac", lilac);
+
+        ItemStack peony = new ItemStack(Material.PEONY);
+        ItemMeta peonyMeta = peony.getItemMeta();
+        peonyMeta.setCustomModelData(0);
+        peonyMeta.setDisplayName(ChatColor.WHITE + "Peony");
+        peony.setItemMeta(peonyMeta);
+        customItems.put("peony", peony);
+
+        ItemStack orange_tulip = new ItemStack(Material.ORANGE_TULIP);
+        ItemMeta orange_tulipMeta = orange_tulip.getItemMeta();
+        orange_tulipMeta.setCustomModelData(0);
+        orange_tulipMeta.setDisplayName(ChatColor.WHITE + "Orange Tulip");
+        orange_tulip.setItemMeta(orange_tulipMeta);
+        customItems.put("orange_tulip", orange_tulip);
+
+        ItemStack allium = new ItemStack(Material.ALLIUM);
+        ItemMeta alliumMeta = allium.getItemMeta();
+        alliumMeta.setCustomModelData(0);
+        alliumMeta.setDisplayName(ChatColor.WHITE + "Allium");
+        allium.setItemMeta(alliumMeta);
+        customItems.put("allium", allium);
+
+        ItemStack pink_tulip = new ItemStack(Material.PINK_TULIP);
+        ItemMeta pink_tulipMeta = pink_tulip.getItemMeta();
+        pink_tulipMeta.setCustomModelData(0);
+        pink_tulipMeta.setDisplayName(ChatColor.WHITE + "Pink Tulip");
+        pink_tulip.setItemMeta(pink_tulipMeta);
+        customItems.put("pink_tulip", pink_tulip);
+
+        ItemStack white_tulip = new ItemStack(Material.WHITE_TULIP);
+        ItemMeta white_tulipMeta = white_tulip.getItemMeta();
+        white_tulipMeta.setCustomModelData(0);
+        white_tulipMeta.setDisplayName(ChatColor.WHITE + "White Tulip");
+        white_tulip.setItemMeta(white_tulipMeta);
+        customItems.put("white_tulip", white_tulip);
+
+        ItemStack lily_of_the_valley = new ItemStack(Material.LILY_OF_THE_VALLEY);
+        ItemMeta lily_of_the_valleyMeta = lily_of_the_valley.getItemMeta();
+        lily_of_the_valleyMeta.setCustomModelData(0);
+        lily_of_the_valleyMeta.setDisplayName(ChatColor.WHITE + "Lily of the Valley");
+        lily_of_the_valley.setItemMeta(lily_of_the_valleyMeta);
+        customItems.put("lily_of_the_valley", lily_of_the_valley);
+
+        ItemStack blue_orchid = new ItemStack(Material.BLUE_ORCHID);
+        ItemMeta blue_orchidMeta = blue_orchid.getItemMeta();
+        blue_orchidMeta.setCustomModelData(0);
+        blue_orchidMeta.setDisplayName(ChatColor.WHITE + "Blue Orchid");
+        blue_orchid.setItemMeta(blue_orchidMeta);
+        customItems.put("blue_orchid", blue_orchid);
+
+        ItemStack wither_rose = new ItemStack(Material.WITHER_ROSE);
+        ItemMeta wither_roseMeta = wither_rose.getItemMeta();
+        wither_roseMeta.setCustomModelData(0);
+        wither_roseMeta.setDisplayName(ChatColor.WHITE + "Wither Rose");
+        wither_rose.setItemMeta(wither_roseMeta);
+        customItems.put("wither_rose", wither_rose);
+
+        ItemStack torchflower = new ItemStack(Material.TORCHFLOWER);
+        ItemMeta torchflowerMeta = torchflower.getItemMeta();
+        torchflowerMeta.setCustomModelData(0);
+        torchflowerMeta.setDisplayName(ChatColor.WHITE + "Torchflower");
+        torchflower.setItemMeta(torchflowerMeta);
+        customItems.put("torchflower", torchflower);
 
         //Brined Meats
         ItemStack salted_cod = new ItemStack(Material.ROTTEN_FLESH);
